@@ -1,28 +1,5 @@
 import boto3
 import os
-from PIL import Image
-
-user_jpg_var = "sample.jpg"
-
-def check_image(user_image):
-#check the image format using pillow
-        try:
-            with Image.open(user_image) as img:
-                if img.format in ['JPEG', 'JPG', 'PNG','TIFF']:
-                    instance = ImageSendAWS(user_image)
-                    print("Image format is correct.")
-                    instance.user_image()
-                else:
-
-                    print("File is not an correct image format. Use `JPEG`, `JPG`, `PNG`, or `TIFF`.")
-                    
-        except IOError:
-
-            print("ioerror: cannot open file.")
-
-
-import boto3
-import os
 import sys
 from PIL import Image
 
@@ -69,12 +46,12 @@ class ImageSendAWS():
 
 
     def send_to_s3(self, file=None):
-        # allow using the instance file when no file arg provided
+        # allow using the instance file when no file argument provided
         if file is None:
             file = getattr(self, 'file', None)
 
         if not file:
-            print("No file path provided to send_to_s3.")
+            print("No file path provided to send to s3.")
             return
 
         if not os.path.exists(file):
@@ -82,7 +59,9 @@ class ImageSendAWS():
             return
 
         try:
+            #extract file name from path
             object_name = os.path.basename(file)
+            #
             self.s3_client.upload_file(file, self.bucket_name, object_name)
             print(f"Successfully uploaded {file} to {self.bucket_name}")
         except Exception as e:
