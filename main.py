@@ -2,7 +2,7 @@ import boto3
 import os
 import sys
 from PIL import Image
-import add_user_data
+from add_user_data import add_user_data
 
 #sample image to remove after testing 
 user_jpg_var = "sample.jpg"
